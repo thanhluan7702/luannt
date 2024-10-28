@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Luan</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 2em; /* Increase size of h1 */
+        }
+        h2 {
+            font-size: 2em; /* Increase size of h2 */
+            margin-left: 3em;
+        }
+        p {
+            font-size: 1.5em; /* Increase size of p */
+            text-indent: 2em; /* Indent paragraph */
+            margin-left: 7em; /* Align left margin */
+            margin-right: 7em; /* Align right margin */
+        }
+        img {
+            display: block; /* Make the image a block element */
+            margin: 0 auto; /* Center the image */
+            max-width: 100%; /* Make the image responsive */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ứng dụng mô hình học máy kết hợp giải quyết bài toán mất mát dữ liệu đơn biến theo thời gian (1D time series)</h1>
+    <h2>1. Tổng quan</h2>
+        <p> - Trong cuộc sống hằng ngày, lợi ích từ các thông tin/ dữ liệu time series là không thể phủ nhận, đây là dữ liệu được ghi nhận
+            cố định với một đơn vị thời gian có thể là năm, quý, tháng, giờ, phút, ... Chẳng hạn như dữ liệu giá chứng khoán trong lĩnh vực
+            tài chính, hay dữ liệu doanh thu trong lĩnh vực bsan hàng, ... Việc ghi nhận dữ liệu theo thời gian thực lại tồn đọng các rủi ro
+            mất mát bởi các yếu tố: khả năng lưu trữ, phần cứng, phần mềm, ... Từ đó, nó sẽ tác động lớn đến hiệu suất của các mô hình thống kê,
+            dự đoán, dự báo trong tương lai.
+        </p>
+            
+        <p> - Chính vì vậy, việc xử lý và tìm được dữ liệu mất mát là một nhiệm vụ quan trọng trong phân tích dữ liệu thời gian,
+             điều này sẽ cải thiện được kết quả từ hoạt động phân tích, hay đạt được sự tin cậy cao trong quy trình thực hiện các bài toán thống kê.
+            Bài viết này, sẽ đề xuất và trình bày được phương pháp xử lý vấn đề này cho dữ liệu thời gian 1 chiều, cần lưu ý khi thực nghiệm phải đảm
+            bảo được tính tương quan, và quan hệ giữa các quan sát.
+        </p>
+
+        <img src="img/ts-pp-yellowstone-1.jpg" alt="Time Series Data Visualization">
+    <h2>2. Phương pháp luận</h2>
+        <p> 
+            - <strong>Định nghĩa trường hợp</strong>: Để xử thực nghiệm bài toán xử lý missing data, tôi chia thành 3 trường hợp chính và xây dựng quy trình xử lý hiệu quả. 
+            Đầu tiên, nếu gaps xuất hiện ở cuối hoặc đầu chuỗi dữ liệu - được định nghĩa nếu khoảng dữ liệu gaps (T) xuất hiện trong khoảng 3*T tại đầu hoặc cuối chuỗi dữ liệu
+            thì sẽ mô hình sẽ thực thi trên dữ liệu liền kề đó. Nếu không thuộc 2 trường hợp trên, thì sẽ được định nghĩa là middle và tiến hành chia dữ liệu thành 2 phần trước
+            và sau gap để huấn luyện và dự đoán kết quả, đây là phương pháp linh hoạt đảm bảo tính chính xác và tin cậy cho bộ tính toán.
+        </p>
+
+        <p>
+            - <strong>Chuẩn bị dữ liệu</strong>: Chuyển dổi từ dữ liệu đơn biến thành (T+1)-dimension. Chuyển đổi này cho phép tận dụng
+            được kết quả dự đoán tại thời điểm trước đó cho kết quả dự đoán tại thời điểm sau này một cách hiệu quả.
+        </p>
+
+        <p>
+            - <strong>Thuật toán</strong>: ARIMA, mô hình hồi quy như SVM, tree là các thuật toán tôi lựa chọn thực nghiệm đề tài
+        </p>
+
+        <p> 
+            - <strong>Chỉ số đánh giá</strong>: Similarity, MAE, RMSE, FB (Forecast bias), FSD (Fraction of Standard Deviation). 
+            Trong đó, FB và FSD là chỉ số đánh giá tổng qua, trong khi 3 chỉ số còn lại sẽ đánh giá trên từng mẫu dữ liệu.
+        </p>
+
+        <img src="img/blog1-process.png">
+    <h2>3. Kết quả thực nghiệm</h2> 
+        <p>
+            - Kết quả được thực nghiệm trên 20 fold cho mỗi trường hợp thu được như sau:
+        </p>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="img/blog1-result-1.png" style="max-width: 75%; height: 120px;">
+            <figcaption style="font-size: 1.5em;">Kết quả thực nghiệm trường hợp đầu chuỗi</figcaption>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="img/blog1-result-2.png" style="max-width: 75%; height: 120px;">
+            <figcaption style="font-size: 1.5em;">Kết quả thực nghiệm trường hợp cuối chuỗi</figcaption>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="img/blog1-result-3.png" style="max-width: 75%; height: 120px;">
+            <figcaption style="font-size: 1.5em;">Kết quả thực nghiệm trường hợp giữa chuỗi</figcaption>
+        </div>
+
+        <p>Trong bài viết này, tôi không đặt ưu tiên cho một chỉ số đánh giá nào, vì nó phụ thuộc vào khoảng và 'giá trị' của dữ liệu nghiên cứu.
+            Tuy nhiên, đánh giá tổng quan trên 3 trường hợp cho thấy rằng, ARIMA cho kết quả tốt hơn so với mô hình ML độc lập, nhưng sẽ tốt hơn nếu
+            kết hợp giữa hai phương pháp, với lớp 1 là ARIMA và lớp 2 là SVM reg (tận dụng được phần dư từ mô hình lớp 1).
+        </p>
+
+    <h2>
+        <a href="https://github.com/thanhluan7702/Imputation-1D-timeseries-data">4. Github</a>
+    </h2>
+        
+</body>
+</html>

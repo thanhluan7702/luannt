@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Luan</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 2em; /* Increase size of h1 */
+        }
+        h2 {
+            font-size: 2em; /* Increase size of h2 */
+            margin-left: 3em;
+        }
+        h3 {
+            font-size: 1.5em; /* Increase size of h3 */
+            margin-left: 6em;
+        }
+        h4 {
+            font-size: 1.5em; /* Increase size of h4 */
+            margin-left: 6em;
+        }
+        p {
+            font-size: 1.525em; /* Increase size of p */
+            text-indent: 2em; /* Indent paragraph */
+            margin-left: 7em; /* Align left margin */
+            margin-right: 7em; /* Align right margin */
+        }
+        img {
+            display: block; /* Make the image a block element */
+            margin: 0 auto; /* Center the image */
+            max-width: 100%; /* Make the image responsive */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        .sub-list {
+            margin-left: 250px; /* Thụt lề */
+            font-size: 1.5em; /* Tăng kích thước chữ */
+            line-height: 1.5;
+            margin-right: 200px;
+        }
+        body {
+            font-family: sans-serif;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto; /* Căn giữa bảng */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Định dạng ô tiêu đề */
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /* Định dạng các ô dữ liệu */
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /* Hàng lẻ và chẵn khác màu */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trích xuất thuộc tính bất động sản nhà ở tại thị trường Đà Nẵng với mô hình PhoBERT</h1>
+    <h2>1. Tổng quan</h2>   
+    <p>
+        Bài báo cáo tập trung vào nghiên cứu các thông tin có giá trị của bất động sản dựa vào mô tả trên các nền tảng giao dịch 
+        trực tuyến. Việc hiểu rõ được hạn chế về tính đầy đủ trong thông tin và chi phí thời gian cho việc tìm kiếm đối với người mua 
+        và người bán là rất lớn. Các phương pháp tìm kiếm thông thường dựa trên các thông tin cơ bản khiến người mua khó khăn trong 
+        việc tìm kiếm bất động sản phù hợp, và việc nhập đầy đủ thông tin của các thuộc tính khiến người bán gặp phải sai sót và tốn 
+        kém thời gian. Để tối ưu về mặt thời gian cho người dùng trải nghiệm nền tảng, bài báo cáo đề xuất sử dụng các thông tin có 
+        sẵn và mô tả của bất động sản trên các nền tảng trực tuyến phổ biến tại thị trường Việt Nam. Các đóng góp chính của bài báo cáo bao gồm:
+    </p>
+        <ul class="sub-list">
+            <li>Xây dựng pipeline để hỗ trợ trong việc nghiên cứu các thông tin mang lại giá trị cho người dùng </li>
+            <li>Phương pháp giải quyết các vấn đề khó khăn trong quy trình khai thác thông tin trong lĩnh vực </li>
+            <li>Giải pháp huấn luyện mô hình dự đoán nhằm giải quyết vấn đề hạn chế về dữ liệu </li>
+            <li>Kết quả nghiên cứu được triển khai trên dữ liệu thực tế thị trường</li>
+        </ul>
+    
+    <img src="img/bds_danang.jpg">
+
+    <h2>2. Cơ sở lý luận</h2>
+        <p>- <strong>Phân tích hành vi người tham gia thị trường bất động sản </strong> </p>
+
+        <p>- <strong>Đối với người mua: </strong> người mua là tập hợp cá thể có nhu cầu sử dụng bất động sản, hay những nhà đầu tư
+        muốn đầu cơ cho những hoạt động mua đi bán lại. Dù với mục đích sở hữu là gì thì người mua vẫn cần được đáp ứng đầy đủ và 
+        minh bạch về mặt thông tin. Bên cạnh những thông tin hữu hình như: giá cả, diện tích, ... thì những thông tinh vô hình như 
+        yếu tố tâm linh, phong thủy hay sự tiện lợi, ... thông thường sẽ không được định nghĩa sẵn trên các công cụ tìm kiếm 
+        ==> <strong>gây khó dễ trong việc tìm kiếm sản phẩm phù hợp</strong> </p>
+
+        <p>- <strong>Đối với người bán: </strong>họ có thể là những nhà phát triển dự án, những nhà đầu cơ, hay những chủ nhà 
+        cá nhân có nhu cầu bán bất động sản cho những nhu cầu của bản thân. Điều mà họ quan tâm nhất chính là khả năng mà các bài đăng
+        sẽ tiếp cận được đến với khách hàng tiềm năng, để làm tốt điều này thì việc cung cấp đầy đủ các thông tin là rất quan trọng.
+        ==> <strong>điều này tốn kém thời gian, thiếu kinh nghiệm và dẫn đến sai sót</strong>.
+        </p>
+    
+        <p>- <strong>Kiến trúc mô hình: </strong>Nghiên cứu được thực nghiệm trên mô hình BERT (Bidirectional Encoder Representations from Transformers) - mô hình NLP
+            được xây dựng  dựa trên kiến trúc Transformers. Dưới đây là hình minh họa của kiến trúc. 
+        </p>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="img/transformer.png" width="500" height="auto">
+            <figcaption style="font-size: 1.5em;">Kiến trúc cơ bản của Transformer</figcaption>
+        </div>
+
+    <h2>3. Quy trình thực nghiệm</h2>   
+        <div style="text-align: center; margin-bottom: 20px;">  
+            <img src="img/thesis-quytrinh.png" width="500" height="auto">
+            <figcaption style="font-size: 1.5em;">Quy trình thực nghiệm</figcaption>
+        </div>
+
+        <p><strong>- Thu thập dữ liệu:</strong>Dữ liệu được thu thập trên ba nền tảng phổ biến trong lĩnh vực như <a href="https://nhatot.com.vn" target="_blank">nhatot.com.vn</a>, 
+            <a href="https://batdongsan.com.vn" target="_blank">batdongsan.com.vn</a>, <a href="https://alonhadat.com.vn" target="_blank">alonhadat.com.vn</a>.
+            Một số khó khăn gặp phải trong tiến trình: ngắt phiên hoạt động, bị cấm và hạn chế khả năng truy cập vào nền tảng, vượt tính
+            năng chứng minh người dùng hợp lệ của Cloudflare, cấu trúc dữ liệu được tổ chức tùy ý khó khăn cho việc lưu trữ.
+        </p>
+
+        <p><strong>- Chuẩn bị dữ liệu</strong>: Khởi đầu quy trình được gán nhãn với một sample nhỏ, sau đó thực hiện tuần hoàn các bước: 
+        huấn luyện mô hình => dự đoán trên dữ liệu mới => xác thực nhãn dự đoán ==> huấn luyện mô hình. Mô hình sẽ được cải thiện theo 
+        thời gian, và tiết kiệm chi phí gán nhãn.
+        </p>
+
+        <p><strong>- Định nghĩa tiêu chuẩn phân loại nhiễu:</strong> những mẫu mô tả chứa thông tin của nhiều bất động sản, hay một 
+            thuộc tính có nhiều giá trị khác nhau hoặc được liệt kê một cách rời rạc, hay mô tả không bao gồm hoặc không rõ ràng các 
+            thông tin về địa chỉ, giá và diện tích (3 thông tin được đánh giá là quan trọng nhất của bđs) thì sẽ được gán là nhiễu.
+            Dưới đây là một số ví dụ về dữ liệu được cho là nhiễu (không có giá trị):
+        </p>
+
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-nhieu1.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">1. Trường hợp quá nhiều bất động sản</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-nhieu2.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">2. Trường hợp không nhắc đến các thông tin quan trọng</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-nhieu3.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">3. Trường hợp đề cập đến nhiều diện tích</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-nhieu4.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">4. Trường hợp liệt kê quá nhiều thông tin chi tiết</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-nhieu5.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">5. Trường hợp liệt kê không rõ ràng về giá</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">  
+                <img src="img/thesis-datchuan.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em;">6. Ví dụ về một bài đăng đạt chuẩn</figcaption>
+            </div>
+        
+        <p>
+            <strong>- Định nghĩa các thực thể:</strong> quy trình trích xuất được thực hiện bởi 2 module: dựa trên quy luật (đối với các
+            thực thể đơn giản, và có giá trị cố định), dựa trên mô hình (đối với các thực thể phức tạp, có sự đánh đố về mặt ngữ nghĩa). 
+            Quy trình gán nhãn cho thực thể cũng được thực hiện tương tự như đối với quy trình phân loại nhiễu. Dưới đây là định nghĩa 
+            của các thực thể theo từng hướng tiếp cận: 
+        </p>
+
+            <div style="text-align: center; margin-bottom: 50px;">  
+                <img src="img/thesis-quyluat.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em; margin-top: 10px;">1. Định nghĩa các thực thể trích xuất theo quy luật</figcaption>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 30px;">  
+                <img src="img/thesis-mohinh.png" width="500" height="auto">
+                <figcaption style="font-size: 1.2em; margin-top: 10px;">2. Định nghĩa các thực thể trích xuất theo mô hình</figcaption>
+            </div>
+    <h2>4. Kết quả thực nghiệm</h2>    
+        <h3>1. Phương pháp thực nghiệm</h3>
+            <p>- Sau quá trình chuẩn bị và thống kê dữ liệu, nhận thấy phân phối dữ liệu không đồng đều giữa các class, bên cạnh đó
+                phát hiện rằng có sự nhập nhằng nhất định giữa một số trường hợp thực tế đối với định nghĩa. Vì vậy, dự án nghiên cứu
+                cũng được thực hiện và đánh giá trên nhiều phương pháp nhưng vẫn tập trung vào giải quyết 3 vấn đề: mất cân bằng, đánh đố
+                ngữ nghĩa và nhập nhằng trong định nghĩa.
+            </p>
+            
+            <h4>a. Phương pháp Focal loss</h4>
+                <p>Focal loss được giới thiệu là một biến thể của cross-entropy giúp giảm thiểu tình trạng mất cân bằng dữ liệu
+                    trong phân phối khi thực hiện huấn luyện mô hình phân loại. Tư tưởng của phương pháp, giúp gán trọng số lớn hơn 
+                    cho các mẫu quan sát thuộc lớp tối thiểu. Trọng số có thể được quyết định dựa trên kinh nghiêm, hay kết quả của 
+                    quá trình tuning, ở đây tôi thực hiện gán trọng số bằng nghịch đảo tần suất xuất hiện của class trong phân phối.
+                </p>
+                <img src="img/focal_loss.png" width="500" height="auto">
+
+            <h4>b. Phương pháp Focal loss</h4>
+                <p>Mục tiêu của phương pháp này tương tư như focal loss, tuy nhiên thay vì dựa trên trọng số thì dice loss được xem như 
+                    là một phiên bản cải tiến của F1-score. Dice loss giải quyết được hạn chế bias vào các mẫu dương tính và bỏ qua các 
+                    mẫu âm tính của F1 bằng cách cộng thêm chỉ số smooth vào tử và mẫu của F1. 
+                </p>
+                <img src="img/dice_loss.png" width="300" height="auto">
+
+            <h4>c. Phương pháp Intrust loss</h4>
+                <p>Khác với dice loss hay focal loss, thì intrust loss được sử dụng nhằm giảm rủi ro overfitting vào dữ liệu gây nhiễu 
+                    (sai sót trong gán nhãn, khác biệt phân phối) của mô hình. Tuy nhiên thì phương pháp này cũng được xây dựng trên cơ 
+                    sở của hàm mất mát cross-entropy.
+                </p>
+                <img src="img/intrust_loss.png" width="350" height="auto">
+
+            <h4>d. Phương pháp label smoothing</h4>
+                <p>Label Smoothing là một kỹ thuật chính quy hóa thường được sử dụng để giải quyết vấn đề overfitting. Phương pháp vấn đề 
+                    bằng cách thêm nhiễu vào các nhãn trong quá trình huấn luyện, giúp mô hình 'ít tự tin' hơn vào các dự đoán của mình. 
+                    Nhờ đó, mô hình sẽ tập trung hơn vào việc học các đặc trưng chính của dữ liệu và tránh ghi nhớ các chi tiết không quan trọng.
+                </p>
+                <img src="img/label_smoothing.png" width="300" height="auto">
+
+            <h4>e. Phương pháp làm giàu dữ liệu (DA)</h4>
+                <p>Hướng tiếp cận của tôi trong phương pháp sẽ dựa trên các kỹ thuật gây nhiễu: cắt bớt độ dài câu, xóa/thêm một số 
+                    phần tử trong câu, thay đổi vị trí 1 ít phần tử, ...
+                </p>
+        <h3>2. Kết quả đánh giá mô hình phân loại nhiễu</h3>
+            <div style="text-align: center; margin-bottom: 50px;">  
+                <img src="img/thesis-phanloai.png" width="800" height="auto">
+                <figcaption style="font-size: 1.2em; margin-top: 10px;">Bảng thống kê phân phối dữ liệu cho nhiệm vụ phân loại</figcaption>
+            </div>
+
+            <table>
+                <caption>Bảng kết quả đánh giá hiệu suất của mô hình phân loại trên các phương pháp</caption>
+                <tr>
+                    <th></th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                </tr>
+                <tr>
+                    <td>Base</td>
+                    <td>0.93</td>
+                    <td>0.85</td>
+                    <td>0.88</td>
+                </tr>
+                <tr>
+                    <td>Dice loss</td>
+                    <td>0.93</td>
+                    <td>0.87</td>
+                    <td>0.90</td>
+                </tr>
+                <tr>
+                    <td>Focal loss</td>
+                    <td>0.94</td>
+                    <td>0.89</td>
+                    <td>0.91</td>
+                </tr>
+                <tr>
+                    <td>Intrust Loss</td>
+                    <td>0.95</td>
+                    <td>0.87</td>
+                    <td>0.90</td>
+                </tr>   
+                <tr>
+                    <td>Label smootding</td>
+                    <td>0.95</td>
+                    <td>0.84</td>
+                    <td>0.88</td>
+                </tr>
+                <tr>
+                    <td>DA</td>
+                    <td>0.86</td>
+                    <td>0.86</td>
+                    <td>0.86</td>
+                </tr>
+            </table>
+            <p><strong>Lưu ý: </strong>Kết quả đánh giá mô hình trên được đo lường theo macro. </p>
+            <p><strong>Nhận xét: </strong>Mặc dù, với mỗi phương pháp thực nghiệm khác nhau, mô hình đều có những 
+                điểm mạnh, điểm yếu riêng biệt. Tuy nhiên, với sự ưu tiên cho f1-macro thì dự án lựa chọn Focal loss là 
+                phương pháp chính cho việc triển khai mô hình phân loại.</p>
+
+        <h3>3. Kết quả đánh giá mô hình trích xuất</h3>
+            <p>Đối với quy trình này, cần lưu ý rằng dự án thực hiện trích xuất trên hai hướng tiếp cận, với tiếp cận trên quy luật
+                sẽ được tiến hành xây dựng regex và đánh giá liên tục, và kết quả đánh giá chỉ bao gồm hướng tiếp cận trên mô hình.
+                Nhãn sẽ được gán theo quy tắc BIO.
+            </p>
+
+            <div style="text-align: center; margin-bottom: 50px;">  
+                <img src="img/thesis-trichxuat.png" width="800" height="auto">
+                <figcaption style="font-size: 1.2em; margin-top: 10px;">Bảng thống kê phân phối dữ liệu cho nhiệm vụ trích xuất</figcaption>
+            </div>
+
+            <table>
+                <caption>Bảng kết quả đánh giá hiệu suất của mô hình trích xuất trên các phương pháp</caption>
+                <tr>
+                    <th></th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                </tr>
+                <tr>
+                    <td>Base</td>
+                    <td>0.91</td>
+                    <td>0.95</td>
+                    <td>0.93</td>
+                </tr>
+                <tr>
+                    <td>Focal loss</td>
+                    <td>0.92</td>
+                    <td>0.91</td>
+                    <td>0.92</td>
+                </tr>
+                <tr>
+                    <td>Label smoothing</td>
+                    <td>0.92</td>
+                    <td>0.94</td>
+                    <td>0.93</td>
+                </tr>
+            </table>
+            <p><strong>Lưu ý: </strong>Kết quả đánh giá mô hình trên được đo lường theo macro. </p>
+            <p><strong>Nhận xét: </strong>Mặc dù, với mỗi phương pháp thực nghiệm khác nhau, mô hình đều có những 
+                điểm mạnh, điểm yếu riêng biệt. Tuy nhiên, với sự ưu tiên cho f1-macro thì dự án lựa chọn Focal loss là 
+                phương pháp chính cho việc triển khai mô hình trích xuất.</p>
+        <h3>4. Nhận xét chung</h3>
+            <p>Kết quả thực nghiệm các phương pháp được hiện trên cùng một hyper-param và không thực hiện quá trình tuning, 
+            vì vậy kết luận của dự án nghiên cứu chưa được đánh giá trên tham số tốt nhất của từng phương pháp. Ngoài ra, 
+            nhận xét đánh giá thực hiện nhanh trên 1 chỉ số macro nên chưa tổng quát hóa được performance đối với từng trường 
+            hợp cụ thể (ưu tiên giữa các class/thực thể). 
+            </p>
+
+        <h3>5. Chuẩn hóa dữ liệu trích xuất</h3>
+            <p>Đây cũng là module cuối cùng mà dự án thực hiện, nhằm chuẩn hóa dữ liệu trích xuất về cùng 1 giá trị, nhằm xây dựng input 
+                cho các bài toán phát triển sau này. Ví dụ: cách biển 500m và đi 500m đến biển, hay 3ty4 và 3 tỷ 400 triệu ==> sẽ được chuẩn hóa thành 1 giá trị biểu diễn
+                giống nhau. Module này được thực hiện cho các thực thể trích xuất bằng mô hình, đặc biệt đối với hai thực thể KICH_THUOC và 
+                DIA_CHI còn được thực hiện chia nhỏ giá trị giúp tôi ưu hóa thông tin tìm kiếm như sau:
+            </p>
+
+            <ul class="sub-list">
+                <li>KICH_THUOC: Tiến hành phân tách thành hai thực thể CHIEU_DAI, CHIEU_RONG trong mô-đun chuẩn hóa. Ví dụ, “kích thước của ngôi nhà ngang 5 x 20m” => CHIEU_DAI = 20 và CHIEU_RONG = 5.</li>
+                <li>DIA_CHI: Cũng được tách thành 3 thực thể  con: QUAN/HUYEN, PHUONG, DUONG. Ví dụ “đường hải thượng lãng ông phường phước ninh hải châu đà nẵng” 
+                    ⇒ QUAN/HUYEN: hải châu, PHUONG: phước ninh và DUONG: hải thượng lãng ông. </li>
+            </ul>
+    <h2>
+        <a href="https://github.com/thanhluan7702/NER-for-DaNang-real-estate">5. Github</a>
+    </h2>
+</body>

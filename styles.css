@@ -59,7 +59,7 @@ nav .right a span {
   margin-left: 5px;
 }
 
-/* SECTION 1: Hero */
+/* SECTION: About me */
 .hero-section {
   display: flex;
   justify-content: space-between;
@@ -108,54 +108,7 @@ nav .right a span {
   border-radius: 50%;
 }
 
-/* SECTION 2: Skills */
-.skills-section {
-  padding: 0 50px;
-  margin-bottom: 100px;
-}
-
-.skills-section h2 {
-  text-align: center;
-  font-size: 50px;
-}
-
-.skills-section .text {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.skills-section .cells {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.skills-section .cells .cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  width: 150px;
-  padding: 10px 20px;
-  margin: 10px;
-  border: 1.5px solid #d3d3d3;
-  border-radius: 5px;
-}
-
-.skills-section .cells .cell img {
-  width: 100px;
-  height: 50px;
-  object-fit: contain;
-  border-radius: 2px;
-}
-
-.skills-section .cells .cell span {
-  font-size: 10;
-}
-
-/* SECTION 3: project */
+/* SECTION: project */
 .project-section {
   padding: 0 50px;
   margin-bottom: 100px;
@@ -343,16 +296,17 @@ nav .right a span {
   border-radius: 8px;
   border: 1px solid #ccc; 
   padding: 36px 32px;
-  width: 240px; 
-  height: 240px;
+  width: 300px; 
+  height: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   transition: all 0.2s ease-in-out;
 }
 
 .person-card img {
-  width: 100px;
+  width: 200px;
+  height: 200px;
   display: block;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   object-fit: cover; 
 }
 
@@ -361,7 +315,7 @@ nav .right a span {
   font-size: 15px;
   text-align: center;
   font-weight: bold;
-  color: #333;
+  color: #333;  
 }
 
 .person-card:hover p {
