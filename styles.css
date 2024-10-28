@@ -296,8 +296,8 @@ nav .right a span {
   border-radius: 8px;
   border: 1px solid #ccc; 
   padding: 36px 32px;
-  width: 300px; 
-  height: 300px;
+  width: 400px; 
+  height: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   transition: all 0.2s ease-in-out;
 }
@@ -312,7 +312,7 @@ nav .right a span {
 
 .person-card p {
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
   color: #333;  
