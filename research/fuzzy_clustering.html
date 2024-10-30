@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Luan</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 2em; /* Increase size of h1 */
+        }
+        h2 {
+            font-size: 2em; /* Increase size of h2 */
+            margin-left: 3em;
+        }
+        h3 {
+            font-size: 1.75em; /* Increase size of h2 */
+            margin-left: 5em;
+        }
+        p {
+            font-size: 1.5em; /* Increase size of p */
+            text-indent: 2em; /* Indent paragraph */
+            margin-left: 7em; /* Align left margin */
+            margin-right: 7em; /* Align right margin */
+        }
+        img {
+            display: block; /* Make the image a block element */
+            margin: 0 auto; /* Center the image */
+            max-width: 100%; /* Make the image responsive */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        body {
+            font-family: sans-serif;
+        }
+        li {
+            margin-right:7em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Giới thiệu về phân cụm mờ (soft clustering)</h1>
+    <h2>1. Clustering là gì?</h2>
+        <p>Clustering (phân cụm) làm một thuật toán học máy không giám sát (Unsupervised learning), với mục tiêu phân chia tổng thể
+            thành các nhóm/cụm - với các điểm trong cùng 1 cụm sẽ có các đặc điểm tương đồng với nhau và khác biệt với các điểm 
+            khác cụm. Về cơ bản, các thuật toán clustering sẽ được chia làm hai nhóm chính: soft và hard clustering.
+        </p>
+        <img src="img/blog2-hard-vs-soft.png">
+        <p>=> Hard clustering: thuật toán sẽ phân định mỗi điểm dữ liệu chỉ thuộc 1 nhóm duy nhất, chẳng hạn như thuật toán Kmeans</p>
+        <p>=> Soft clustering: thay vì thuật toán sẽ đặt mỗi điểm thuộc 1 nhóm, thì sẽ tính xác suất thuộc các cụm cho từng điểm dữ liệu.
+            Có nghĩa rằng, một điểm có thể thuộc nhiều cụm với xác suất, điểm khả năng khác nhau. C-means sẽ là thuật toán sẽ được giới 
+            thiệu trong bài viết này.
+        </p>
+        
+        <h3>a. Tổng quan về thuật toán K-means</h3>
+            <p>Như đã được giới thiệu, Kmeans là một thuật toán hard clustering phổ biến. Thuật toán hoạt động với mục tiêu chia nhỏ 
+                data thành k cụm sao cho các điểm dữ liệu trong cùng một cụm có tính chất đặc điểm tương tự nhau. Các bước thực hiện của thuật toán:</p>
+            <ul style="padding-left: 20px;margin-left: 10em; font-size:1.5em" >
+                <li>Bước 1: Chọn số cụm k muốn tạo.</li>
+                <li>Bước 2: Khởi tạo k điểm ban đầu làm center của các cụm.</li>
+                <li>Bước 3: Lặp lại các bước sau cho đến khi tiêu chí dừng:</li>
+                    <ul>
+                        <li>Phân mỗi điểm dữ liệu vào cụm có center gần nó nhất.</li>
+                        <li>Cập nhật center của từng cụm bằng cách tính trung bình của tất cả các điểm dữ liệu thuộc vào cụm đó.</li>
+                        <li>Kiểm tra xem việc gán dữ liệu vào từng cụm có thay đổi so với lần lặp trước hay không. Nếu không có thay đổi đáng kể hoặc không có sự thay đổi thì dừng thuật toán</li>
+                    </ul>
+                <li>Bước 4: Kết thúc thuật toán khi tiêu chí dừng được đáp ứng hoặc số lần lặp đạt giới hạn tối đa.</li>
+            </ul>
+            <p><strong>Hạn chế của thuật toán Kmeans: </strong>Nhạy cảm với điểm khởi tạo ban đầu, không linh hoạt về hình dáng cụm (thuật toán
+                kmeans có xu hướng giả định các cụm có hình dạng lồi và có kích thước tương đồng nhau-không tổng quát hoát trên dữ liệu thực tế), độ
+                chính xác bị giới hạn bởi quy tắc dừng thuật toán, ảnh hưởng lớn bởi nhiễu, không phù hợp với dữ liệu phi tuyến tính.
+            </p>
+
+        <h3>b. Tổng quan về thuật toán C-means</h3>
+            <p>Khác với kmeans, thì cmeans (fcm) cho phép một điểm dữ liệu có thể thuộc về nhiều cụm khác nhau tương ứng với mức độ phụ thuộc khác nhau (độ mờ).
+                Bằng cách tiếp cận này thì có thể khám phá ra các cụm dữ liệu phức tạp theo cách linh hoạt hơn. Các bước thực hiện của thuật toán:</p>
+            <ul style="padding-left: 20px;margin-left: 10em; font-size:1.5em" >
+                <li>Bước 1: Chọn k điểm bất kỳ làm các center và mức độ m (m =2).</li>
+                <li>Bước 2: Khởi tạo ma trận trọng số theo cơ chế partition matrix để gán membership value.</li>
+                <li>Bước 3: Lặp lại các bước sau cho đến khi tiêu chí dừng:</li>
+                    <ul>
+                        <li>Tính toán center của từng cụm bằng cách sử dụng ma trận trọng số W và công thức trung bình có trọng số.</li>
+                        <li>Tính toán độ thuộc của mỗi điểm dữ liệu tới từng cụm bằng cách sử dụng trọng số và khoảng cách từ điểm đó tới center của cụm với độ mờ m xác định.</li>
+                        <li>Cập nhật ma trận trọng số W bằng cách sử dụng độ thuộc của từng điểm đến từng cụm, và công thức mờ để tính toán trọng số mới.</li>
+                    </ul>
+                <li>Bước 4: Kết thúc thuật toán khi tiêu chí dừng được đáp ứng hoặc số lần lặp đạt giới hạn tối đa.</li>
+            </ul>
+            <p><strong>Hạn chế của thuật toán Cmeans: </strong>Nhạy cảm với thay đổi số lượng cụm (mặc dù có khả năng điều chỉnh số lượng
+                cụm bằng cách điều chỉnh độ mờ, nhưng lựa chọn số cụm ban đầu không hợp lý có thể dẫn đến phân cụm không tối ưu), tính toán phức tạp, 
+                không phân biệt tốt giữa các cụm trùng lặp, khó xác định tham số mờ (m), tương tự như kmeans thì fcm vẫn bị ảnh hưởng lớn bởi outlier, 
+                không xử lý tốt với dữ liệu không đạt phân phối chuẩn (bởi vì fcm giả định phân phối sẽ là ppc).
+            </p>
+    <h2>2. So sánh 2 thuật toán kmeans và cmeans</h2>
+        <img src="img/blog2-sosanh-kmeans-cmeans.png">
+        <p>Mặc dù cả hai thuật toán có sự khác biệt nhau, tuy nhiên về cơ bản thì cmeans được xem như làm một biến thể của kmeans
+            với sự cải tiến dựa trên tham số m vào công thức tính toán. Chính vì vậy công thức tính hàm loss của cả hai có thể quy về
+            công thức chung dưới đây: 
+        </p>
+        <img src="img/blog2-loss-chung.png">
+        <p><strong>Cần lưu ý rằng,</strong> nếu tham số m=1 thì thuật toán cmeans sẽ quay về thành kmeans.</p>
+
+    <h2>3. C-means hạn chế 'sự ưu tiên' trong kmeans như thế nào?</h2>
+        <img src="img/blog2-demo.png">
+        <p>Câu trả lời chính xác là <strong>độ mờ</strong>, giả sử với trường hợp bên trên, với điểm dữ liệu thứ 5 và thứ 6, đang có vị trí nằm giữa và có khoảng cách đến center của 
+            các cụm là như nhau, lúc này kmeans sẽ tạo ra sự bias và cho 2 điểm này vào 1 cụm đang có số lượng điểm nhiều hơn (giả sử
+            là cụm 0), còn với cmeans thì nó sẽ xét 2 điểm này có membership như nhau ở 2 cụm.
+        </p>
+</body>
